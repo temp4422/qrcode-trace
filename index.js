@@ -11,17 +11,18 @@ const fconsole = new Console({ stdout: fs.createWriteStream(filePath, { flags: '
 
 // Run server
 const server = http.createServer((req, res) => {
-  // Log request
+  // Request
   let userData = `
-${req.socket.remoteAddress}
-/* === USER HEADERS === */
-${JSON.stringify(req.headers)}`
+{
+  "request TIME": "${new Date().toISOString()}",
+  "request IP": "${req.socket.remoteAddress}",
+  "request HEADERS": ${JSON.stringify(req.headers)}
+},`
   fconsole.log(userData)
 
-  // Response headers
+  // Response
   res.statusCode = 200
   res.setHeader('Content-Type', 'text/html')
-
   fs.readFile('./index.html', (err, data) => {
     if (err) res.end()
     res.end(data)
