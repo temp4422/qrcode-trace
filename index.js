@@ -41,11 +41,8 @@ const server = http.createServer((req, res) => {
     //   },`
     //   fconsole.log(userData)
 
-    const targetUrl = reqUrl.query.slice(4)
-    console.log(targetUrl)
+    const targetUrl = reqUrl.query.slice(4) // remove 'url='
     res.setHeader('Content-Type', 'text/html')
-    // res.setHeader('Target-Url', targetUrl)
-    // fs.readFile('./src/trace.html', (err, data) => res.end(data))
     res.write(buildTraceFile(targetUrl))
     res.end()
   }

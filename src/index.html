@@ -49,14 +49,24 @@
       .download-qrcode {
         display: block;
       }
+
+      input:valid {
+        background: lightgreen;
+      }
     </style>
   </head>
   <body>
     <h1>QRcode Trace</h1>
     <form>
       <label for="url">Input URL:</label>
-      <input type="text" name="url" class="input-url" value="https://google.com" />
-      <input type="button" name="button" value="Submit" onclick="handleSubmitUrl()" />
+      <input type="url" name="url" class="input-url" placeholder="example.com" required />
+      <input
+        class="submit-button"
+        type="button"
+        name="button"
+        value="Submit"
+        onclick="handleSubmitUrl()"
+      />
     </form>
 
     <h2>Trace and Download</h2>
