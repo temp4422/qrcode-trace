@@ -1,43 +1,47 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JL62JS9M93"></script>
-    <script>
-      window.dataLayer = window.dataLayer || []
-      function gtag() {
-        dataLayer.push(arguments)
-      }
-      gtag('js', new Date())
-
-      gtag('config', 'G-JL62JS9M93')
-    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QRcode Trace</title>
     <style>
-      .spinner {
-        display: block;
-        background: white;
-        width: 2rem;
-        height: 2rem;
-        border: 0.25em solid #399efc;
-        border-bottom-color: white;
-        border-radius: 50%;
-        -webkit-animation: spinner-border 0.75s linear infinite;
-        animation: spinner-border 0.75s linear infinite;
+      * {
+        margin: 0.5rem 0;
       }
-      @keyframes spinner-border {
-        to {
-          transform: rotate(360deg);
-        }
+      h2 {
+        margin: 2rem 0 0 0;
+      }
+      body {
+        margin: 1rem;
+      }
+      .input-url {
+        display: block;
+        width: 100%;
+        max-width: 768px;
+      }
+      .output-url {
+        height: 1.5rem;
+        max-width: 768px;
+      }
+      .download-qrcode {
+        display: block;
       }
     </style>
   </head>
-
   <body>
-    <div class="spinner"></div>
+    <h1>QRcode Trace</h1>
+    <form action="">
+      <label for="url">Input URL:</label>
+      <input type="text" name="url" class="input-url" />
+      <input type="button" name="button" value="Submit" />
+    </form>
 
-    <script>
-      setTimeout(() => {
-        window.location.replace('https://x-drive.ua/')
-      }, 10)
-    </script>
+    <h2>Trace and Download</h2>
+    <div>
+      <p>Trace URL:</p>
+      <div class="output-url"></div>
+    </div>
+
+    <button class="download-qrcode" disabled>Download QR code</button>
   </body>
 </html>
