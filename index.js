@@ -12,15 +12,16 @@ const fconsole = new Console({ stdout: fs.createWriteStream(filePath, { flags: '
 
 // Run server
 const server = http.createServer((req, res) => {
-  const parsedUrl = url.parse(req.url)
-  console.log(parsedUrl.query)
+  const reqUrl = url.parse(req.url)
 
-  switch (parsedUrl.pathname) {
+  switch (reqUrl.pathname) {
     case '/':
+      res.statusCode = 200
       res.setHeader('Content-Type', 'text/html')
       fs.readFile('./src/index.html', (err, data) => res.end(data))
       break
     case '/trace':
+      res.statusCode = 200
       handleUrl()
       break
     default:
@@ -31,15 +32,14 @@ const server = http.createServer((req, res) => {
 
   // Trace api
   function handleUrl() {
-    let userData = `
-  {
-    "request TIME": "${new Date().toISOString()}",
-    "request IP": "${req.socket.remoteAddress}",
-    "request HEADERS": ${JSON.stringify(req.headers)}
-    },`
-    fconsole.log(userData)
+    //   let userData = `
+    // {
+    //   "request TIME": "${new Date().toISOString()}",
+    //   "request IP": "${req.socket.remoteAddress}",
+    //   "request HEADERS": ${JSON.stringify(req.headers)}
+    //   },`
+    //   fconsole.log(userData)
 
-    res.statusCode = 200
     res.setHeader('Content-Type', 'text/html')
     fs.readFile('./src/trace.html', (err, data) => res.end(data))
   }
