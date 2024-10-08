@@ -1,5 +1,6 @@
 import * as http from 'node:http'
 import * as fs from 'node:fs'
+import * as url from 'node:url'
 import { Console } from 'console'
 
 // Log to file
@@ -11,13 +12,13 @@ const fconsole = new Console({ stdout: fs.createWriteStream(filePath, { flags: '
 
 // Run server
 const server = http.createServer((req, res) => {
-  switch (req.url) {
+  const parsedUrl = url.parse(req.url)
+  console.log(parsedUrl.query)
+
+  switch (parsedUrl.pathname) {
     case '/':
       res.setHeader('Content-Type', 'text/html')
-      fs.readFile('./src/index.html', (err, data) => {
-        if (err) res.end()
-        res.end(data)
-      })
+      fs.readFile('./src/index.html', (err, data) => res.end(data))
       break
     case '/trace':
       handleUrl()
@@ -30,7 +31,6 @@ const server = http.createServer((req, res) => {
 
   // Trace api
   function handleUrl() {
-    console.log('OK')
     let userData = `
   {
     "request TIME": "${new Date().toISOString()}",
@@ -41,10 +41,7 @@ const server = http.createServer((req, res) => {
 
     res.statusCode = 200
     res.setHeader('Content-Type', 'text/html')
-    fs.readFile('./src/trace.html', (err, data) => {
-      if (err) res.end()
-      res.end(data)
-    })
+    fs.readFile('./src/trace.html', (err, data) => res.end(data))
   }
 })
 
