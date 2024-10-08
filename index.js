@@ -2,6 +2,7 @@ import * as http from 'node:http'
 import * as fs from 'node:fs'
 import * as url from 'node:url'
 import { Console } from 'console'
+import { buildTraceFile } from './src/buildTraceFile.js'
 
 // Log to file
 const filePath = './logs.txt'
@@ -40,8 +41,13 @@ const server = http.createServer((req, res) => {
     //   },`
     //   fconsole.log(userData)
 
+    const targetUrl = reqUrl.query.slice(4)
+    console.log(targetUrl)
     res.setHeader('Content-Type', 'text/html')
-    fs.readFile('./src/trace.html', (err, data) => res.end(data))
+    // res.setHeader('Target-Url', targetUrl)
+    // fs.readFile('./src/trace.html', (err, data) => res.end(data))
+    res.write(buildTraceFile(targetUrl))
+    res.end()
   }
 })
 
