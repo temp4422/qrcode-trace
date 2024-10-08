@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --env-file=.env index.js",
-    "start": "node --env-file=.env index.js",
+    "dev": "nodemon --env-file=.env ./index.js",
+    "start": "node --env-file=.env ./index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

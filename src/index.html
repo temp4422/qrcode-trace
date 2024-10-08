@@ -53,10 +53,10 @@
   </head>
   <body>
     <h1>QRcode Trace</h1>
-    <form action="">
+    <form>
       <label for="url">Input URL:</label>
       <input type="text" name="url" class="input-url" />
-      <input type="button" name="button" value="Submit" />
+      <input type="button" name="button" value="Submit" onclick="handleSubmitUrl()" />
     </form>
 
     <h2>Trace and Download</h2>
@@ -67,5 +67,17 @@
     </div>
 
     <button class="download-qrcode" disabled>Download QR code</button>
+    <script>
+      // async function handleSubmitUrl() {
+      function handleSubmitUrl() {
+        const loader = document.querySelector('.loader')
+        loader.style.display = 'block'
+
+        fetch('/trace')
+        // const response = await fetch('/trace')
+        // const data = await response
+        // console.log(data)
+      }
+    </script>
   </body>
 </html>
