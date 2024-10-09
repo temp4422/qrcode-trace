@@ -25,6 +25,9 @@ const server = http.createServer((req, res) => {
       res.statusCode = 200
       handleUrl()
       break
+    case '/done':
+      console.log('OK')
+      break
     default:
       res.statusCode = 404
       res.write('Not found')
@@ -44,6 +47,7 @@ const server = http.createServer((req, res) => {
     const targetUrl = reqUrl.query.slice(4) // remove 'url='
     res.setHeader('Content-Type', 'text/html')
     res.write(buildTraceFile(targetUrl))
+
     res.end()
   }
 })
