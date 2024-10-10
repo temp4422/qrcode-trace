@@ -21,7 +21,7 @@
       }
 
       .output-box {
-        min-height: 2rem;
+        min-height: 3rem;
       }
       .output-url {
         display: none;
@@ -64,7 +64,7 @@
         name="url"
         class="input-url"
         placeholder="example.com"
-        value="test.com"
+        value="google.com"
         required
       />
       <input
@@ -79,7 +79,7 @@
     <h2>Trace and Download</h2>
     <p>Trace URL:</p>
     <div class="output-box">
-      <div class="output-url">ur url</div>
+      <div class="output-url"></div>
       <div class="loader"></div>
     </div>
 
@@ -96,7 +96,7 @@
         const data = await response.text()
 
         const outputUrl = document.querySelector('.output-url')
-        outputUrl.innerHTML = data
+        outputUrl.innerHTML = `<a href="${data}" target="_blank">${data}</a>`
         outputUrl.style.display = 'block'
         loader.style.display = 'none'
 
@@ -105,7 +105,9 @@
       }
 
       function handleDownloadQrcode() {
-        fetch(`/generate?url=${input.value}`)
+        const outputUrl = document.querySelector('.output-url')
+        fetch(`/download?url=${outputUrl.innerText}`)
+        console.log(outputUrl.innerText)
       }
     </script>
   </body>

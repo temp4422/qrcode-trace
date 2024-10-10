@@ -26,8 +26,14 @@ const server = http.createServer((req, res) => {
       const { redirectUrl, tracePageWithRedirect } = traceUrl(targetUrl)
       res.statusCode = 200
       res.setHeader('Content-Type', 'text/html')
-      res.write(redirectUrl)
       res.write(tracePageWithRedirect)
+      res.end()
+      break
+    case '/download':
+      res.statusCode = 200
+      // res.setHeader('Content-Type', 'text/html')
+      // res.write(redirectUrl)
+      res.write('ok')
       res.end()
       break
     default:

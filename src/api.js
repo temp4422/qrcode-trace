@@ -14,7 +14,7 @@ function generateUrl(targetUrl) {
   const timestampId = Number(new Date().getTime())
   map.set(timestampId, targetUrl.toString())
   // const qrcodeTraceUrl = `https://qrcode-trace.duckdns.org/${timestampId}`
-  const qrcodeTraceUrl = `localhost:3000/${timestampId}`
+  const qrcodeTraceUrl = `http://localhost:3000/trace?url=${timestampId}`
   return qrcodeTraceUrl
 }
 
@@ -25,5 +25,7 @@ function traceUrl(targetTimestamp) {
   const tracePageWithRedirect = tracePage.replace('targetUrl', redirectUrl)
   return { redirectUrl, tracePageWithRedirect }
 }
+
+function downloadQrcode(params) {}
 
 export { fconsole, generateUrl, traceUrl }
