@@ -1,4 +1,5 @@
-import * as fs from 'node:fs'
+import fs from 'node:fs'
+import QRCode from 'qrcode'
 import { Console } from 'console'
 
 // const host = 'https://qrcode-trace.duckdns.org'
@@ -17,7 +18,8 @@ function generateUrl(targetUrl) {
   const timestampId = Number(new Date().getTime())
   map.set(timestampId, targetUrl.toString())
   const qrcodeTraceUrl = `${host}/trace?url=${timestampId}`
-  console.log(qrcodeTraceUrl)
+
+  QRCode.toFile('./dist/qrcode.png', `${host}/trace?=${timestampId}`)
   return qrcodeTraceUrl
 }
 
@@ -29,17 +31,6 @@ function traceUrl(targetTimestamp) {
   return tracePageWithRedirect
 }
 
-async function downloadQrcode(targetUrl) {
-  console.log('OK')
-  await fetch(
-    `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${host}/trace?url=${targetUrl}`
-  )
+function getQrcode() {}
 
-  // const response = await fetch(
-  //   `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${host}/trace?url=${targetUrl}`
-  // )
-  // const data = await response.json()
-  // https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=http://localhost:3000/trace?url=1728555897046
-}
-
-export { fconsole, generateUrl, traceUrl, downloadQrcode }
+export { fconsole, generateUrl, traceUrl, getQrcode }

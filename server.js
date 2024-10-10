@@ -1,7 +1,7 @@
-import * as http from 'node:http'
-import * as fs from 'node:fs'
-import * as url from 'node:url'
-import { generateUrl, traceUrl, downloadQrcode } from './src/api.js'
+import http from 'node:http'
+import fs from 'node:fs'
+import url from 'node:url'
+import { generateUrl, traceUrl, getQrcode } from './src/api.js'
 
 // Run server
 const server = http.createServer((req, res) => {
@@ -19,25 +19,21 @@ const server = http.createServer((req, res) => {
       break
     case '/generate':
       res.statusCode = 200
-      res.write(generateUrl(targetUrl))
-      res.end()
+      res.end(generateUrl(targetUrl))
       break
     case '/trace':
       res.statusCode = 200
       res.setHeader('Content-Type', 'text/html')
-      res.write(traceUrl(targetUrl))
-      res.end()
+      res.end(traceUrl(targetUrl))
       break
-    case '/download':
+    case '/get':
       res.statusCode = 200
-      // res.setHeader('Content-Type', 'text/html')
-      downloadQrcode(targetUrl)
-      res.end()
+      res.setHeader('Content-Type', 'image/png')
+      fs.readFile('./dist/qrcode.png', (err, data) => res.end(data))
       break
     default:
       res.statusCode = 404
-      res.write('Not found')
-      res.end()
+      res.end('Not found')
   }
 })
 
