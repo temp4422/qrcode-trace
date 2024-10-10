@@ -2,8 +2,8 @@ import fs from 'node:fs'
 import QRCode from 'qrcode'
 import { Console } from 'console'
 
-// const host = 'https://qrcode-trace.duckdns.org'
-const host = 'http://localhost:3000'
+const host = 'https://qrcode-trace.duckdns.org'
+// const host = 'http://localhost:3000'
 
 // Log to file
 const filePath = './logs.txt'
