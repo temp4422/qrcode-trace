@@ -1,7 +1,7 @@
 import * as http from 'node:http'
 import * as fs from 'node:fs'
 import * as url from 'node:url'
-import { generateUrl, traceUrl } from './src/api.js'
+import { generateUrl, traceUrl, downloadQrcode } from './src/api.js'
 
 // Run server
 const server = http.createServer((req, res) => {
@@ -23,17 +23,15 @@ const server = http.createServer((req, res) => {
       res.end()
       break
     case '/trace':
-      const { redirectUrl, tracePageWithRedirect } = traceUrl(targetUrl)
       res.statusCode = 200
       res.setHeader('Content-Type', 'text/html')
-      res.write(tracePageWithRedirect)
+      res.write(traceUrl(targetUrl))
       res.end()
       break
     case '/download':
       res.statusCode = 200
       // res.setHeader('Content-Type', 'text/html')
-      // res.write(redirectUrl)
-      res.write('ok')
+      downloadQrcode(targetUrl)
       res.end()
       break
     default:

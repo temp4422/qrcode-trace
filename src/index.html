@@ -104,10 +104,18 @@
         downloadQrcode.disabled = false
       }
 
-      function handleDownloadQrcode() {
+      async function handleDownloadQrcode() {
         const outputUrl = document.querySelector('.output-url')
-        fetch(`/download?url=${outputUrl.innerText}`)
-        console.log(outputUrl.innerText)
+        const urlSearch = new URL(outputUrl.firstChild.href).search
+        // fetch(`/download${urlSearch}`)
+        // const response = await fetch(
+        //   `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=http://localhost:3000/trace?url=1728555897046`
+        // )
+        // const data = response.json()
+        // return data
+        window.location.replace(
+          'https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=http://localhost:3000/trace?url=1728555897046'
+        )
       }
     </script>
   </body>
