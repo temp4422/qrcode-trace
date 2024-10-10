@@ -59,7 +59,14 @@
     <h1>QRcode Trace</h1>
     <form>
       <label for="url">Input URL:</label>
-      <input type="url" name="url" class="input-url" placeholder="example.com" required />
+      <input
+        type="url"
+        name="url"
+        class="input-url"
+        placeholder="example.com"
+        value="test.com"
+        required
+      />
       <input
         class="submit-button"
         type="button"
@@ -76,14 +83,29 @@
       <div class="loader"></div>
     </div>
 
-    <button class="download-qrcode" disabled>Download QR code</button>
+    <button class="download-qrcode" disabled onclick="handleDownloadQrcode()">
+      Download QR code
+    </button>
     <script>
-      function handleSubmitUrl() {
+      async function handleSubmitUrl() {
         const loader = document.querySelector('.loader')
         loader.style.display = 'block'
 
         const input = document.querySelector('.input-url')
-        fetch(`/trace?url=${input.value}`)
+        const response = await fetch(`/generate?url=${input.value}`)
+        const data = await response.text()
+
+        const outputUrl = document.querySelector('.output-url')
+        outputUrl.innerHTML = data
+        outputUrl.style.display = 'block'
+        loader.style.display = 'none'
+
+        const downloadQrcode = document.querySelector('.download-qrcode')
+        downloadQrcode.disabled = false
+      }
+
+      function handleDownloadQrcode() {
+        fetch(`/generate?url=${input.value}`)
       }
     </script>
   </body>
