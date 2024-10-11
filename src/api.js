@@ -19,7 +19,7 @@ function generateUrl(targetUrl) {
   map.set(timestampId, targetUrl.toString())
   const qrcodeTraceUrl = `${host}/trace?url=${timestampId}`
 
-  QRCode.toFile('./dist/qrcode.png', `${host}/trace?=${timestampId}`)
+  QRCode.toFile('./dist/qrcode.png', `${host}/trace?url=${timestampId}`)
   return qrcodeTraceUrl
 }
 
