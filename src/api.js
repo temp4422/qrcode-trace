@@ -1,25 +1,39 @@
 import fs from 'node:fs'
 import QRCode from 'qrcode'
-import { Console } from 'console'
+import { client } from '../server.js'
 
-const host = 'https://qrcode-trace.duckdns.org'
-// const host = 'http://localhost:3000'
+// const host = 'https://qrcode-trace.duckdns.org'
+const host = 'http://localhost:3000'
 
-// Log to file
-const filePath = './logs.txt'
-if (!fs.existsSync(filePath)) {
-  fs.writeFile(filePath, new Date().toString(), (err) => err)
-}
-const fconsole = new Console({ stdout: fs.createWriteStream(filePath, { flags: 'a' }) })
-
+// Use HashMap if not using mongodb
 const map = new Map()
 
-function generateUrl(targetUrl) {
+// Insert data into database
+async function insertInMongodb(timestampId, qrcodeTraceUrl, targetUrl, requestIP, requestHeaders) {
+  await client.connect()
+  await client.db('admin').command({ ping: 1 })
+  console.log('Pinged your deployment. You successfully connected to MongoDB!')
+
+  const qrcodeTraceCollection = client.db('qrcode-trace-db').collection('data-collection')
+  const result = await qrcodeTraceCollection.insertOne({
+    createdOn: new Date(),
+    timestampId: timestampId,
+    targetUrl: targetUrl,
+    qrcodeTraceUrl: qrcodeTraceUrl,
+    userData: { requestIP: requestIP, requestHeaders: requestHeaders },
+  })
+  console.log(result)
+}
+
+function generateUrl(targetUrl, requestIP, requestHeaders) {
   const timestampId = Number(new Date().getTime())
   map.set(timestampId, targetUrl.toString())
   const qrcodeTraceUrl = `${host}/trace?url=${timestampId}`
 
   QRCode.toFile('./dist/qrcode.png', `${host}/trace?url=${timestampId}`)
+
+  insertInMongodb(timestampId, qrcodeTraceUrl, targetUrl, requestIP, requestHeaders)
+
   return qrcodeTraceUrl
 }
 
@@ -33,4 +47,4 @@ function traceUrl(targetTimestamp) {
 
 function getQrcode() {}
 
-export { fconsole, generateUrl, traceUrl, getQrcode }
+export { generateUrl, traceUrl, getQrcode }

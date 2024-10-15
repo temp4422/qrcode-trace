@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/temp4422/qrcode-trace#readme",
   "dependencies": {
+    "mongodb": "^6.9.0",
     "qrcode": "^1.5.4"
   }
 }
