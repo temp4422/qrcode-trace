@@ -1,6 +1,6 @@
 import fs from 'node:fs'
 import QRCode from 'qrcode'
-import { client } from '../server.js'
+import { mongoDbClient } from '../server.js'
 
 // const host = 'https://qrcode-trace.duckdns.org'
 const host = 'http://localhost:3000'
@@ -10,19 +10,19 @@ const map = new Map()
 
 // Insert data into database
 async function insertInMongodb(timestampId, qrcodeTraceUrl, targetUrl, requestIP, requestHeaders) {
-  await client.connect()
-  await client.db('admin').command({ ping: 1 })
+  await mongoDbClient.connect()
+  await mongoDbClient.db('admin').command({ ping: 1 })
   console.log('Pinged your deployment. You successfully connected to MongoDB!')
 
-  const qrcodeTraceCollection = client.db('qrcode-trace-db').collection('data-collection')
-  const result = await qrcodeTraceCollection.insertOne({
-    createdOn: new Date(),
-    timestampId: timestampId,
-    targetUrl: targetUrl,
-    qrcodeTraceUrl: qrcodeTraceUrl,
-    userData: { requestIP: requestIP, requestHeaders: requestHeaders },
-  })
-  console.log(result)
+  // const qrcodeTraceCollection = client.db('qrcode-trace-db').collection('data-collection')
+  // const result = await qrcodeTraceCollection.insertOne({
+  //   createdOn: new Date(),
+  //   timestampId: timestampId,
+  //   targetUrl: targetUrl,
+  //   qrcodeTraceUrl: qrcodeTraceUrl,
+  //   userData: { requestIP: requestIP, requestHeaders: requestHeaders },
+  // })
+  // console.log(result)
 }
 
 function generateUrl(targetUrl, requestIP, requestHeaders) {

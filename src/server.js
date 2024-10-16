@@ -1,23 +1,23 @@
 import http from 'node:http'
 import fs from 'node:fs'
 import url from 'node:url'
-import { generateUrl, traceUrl, getQrcode } from './src/api.js'
+import { generateUrl, traceUrl, getQrcode } from './models/models.js'
 import { MongoClient } from 'mongodb'
 
 // Connect to database with mongodb driver
-const client = new MongoClient(process.env.MONGODB_URI)
+const mongoDbClient = new MongoClient(process.env.MONGODB_URI)
 async function connectToDatabase() {
   try {
-    await client.connect()
+    await mongoDbClient.connect()
     // Send a ping to confirm a successful connection
-    await client.db('admin').command({ ping: 1 })
+    await mongoDbClient.db('admin').command({ ping: 1 })
     console.log('Pinged your deployment. You successfully connected to MongoDB!')
-    return client
+    return mongoDbClient
   } catch (error) {
     console.log(error)
   } finally {
     // Ensures that the client will close when you finish/error
-    await client.close()
+    await mongoDbClient.close()
   }
 }
 connectToDatabase()
@@ -32,7 +32,7 @@ const server = http.createServer((req, res) => {
     case '/':
       res.statusCode = 200
       res.setHeader('Content-Type', 'text/html')
-      fs.readFile('./src/index.html', (err, data) => res.end(data))
+      fs.readFile('./src/views/index.html', (err, data) => res.end(data))
       break
     case '/generate':
       res.statusCode = 200
@@ -62,4 +62,4 @@ server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`)
 })
 
-export { client }
+export { mongoDbClient, server }
