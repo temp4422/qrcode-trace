@@ -1,4 +1,5 @@
 import fs from 'node:fs'
+import url from 'node:url'
 import QRCode from 'qrcode'
 import { mongoDbClient } from '../server.js'
 
@@ -9,31 +10,34 @@ const host = 'http://localhost:3000'
 const map = new Map()
 
 // Insert data into database
-async function insertInMongodb(timestampId, qrcodeTraceUrl, targetUrl, requestIP, requestHeaders) {
-  await mongoDbClient.connect()
-  await mongoDbClient.db('admin').command({ ping: 1 })
-  console.log('Pinged your deployment. You successfully connected to MongoDB!')
+async function insertInMongodb(targetUrl, timestampId, req) {
+  const data = {
+    createdOn: new Date(),
+    timestampId: timestampId,
+    targetUrl: targetUrl,
+    userData: { requestIP: req.socket.remoteAddress, requestHeaders: req.headers },
+  }
+  console.log(data)
 
-  // const qrcodeTraceCollection = client.db('qrcode-trace-db').collection('data-collection')
-  // const result = await qrcodeTraceCollection.insertOne({
-  //   createdOn: new Date(),
-  //   timestampId: timestampId,
-  //   targetUrl: targetUrl,
-  //   qrcodeTraceUrl: qrcodeTraceUrl,
-  //   userData: { requestIP: requestIP, requestHeaders: requestHeaders },
-  // })
-  // console.log(result)
+  await mongoDbClient.connect()
+
+  const insertedObj = await mongoDbClient
+    .db('qrcode-trace-db')
+    .collection('data-collection')
+    .insertOne(data)
+
+  console.log(insertedObj)
 }
 
-function generateUrl(targetUrl, requestIP, requestHeaders) {
+function generateUrl(req) {
+  const targetUrl = url.parse(req.url).query.slice(4)
   const timestampId = Number(new Date().getTime())
-  map.set(timestampId, targetUrl.toString())
-  const qrcodeTraceUrl = `${host}/trace?url=${timestampId}`
+
+  insertInMongodb(targetUrl, timestampId, req)
+  map.set(timestampId, targetUrl) // Use HashMap if not using mongodb
 
   QRCode.toFile('./dist/qrcode.png', `${host}/trace?url=${timestampId}`)
-
-  insertInMongodb(timestampId, qrcodeTraceUrl, targetUrl, requestIP, requestHeaders)
-
+  const qrcodeTraceUrl = `${host}/trace?url=${timestampId}`
   return qrcodeTraceUrl
 }
 
