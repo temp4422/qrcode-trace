@@ -4,7 +4,7 @@ const mongoDbClient = new MongoClient(process.env.MONGODB_URI)
 mongoDbClient
   .connect()
   .then(mongoDbClient.db('admin').command({ ping: 1 }))
-  .then(() => console.log('OK, successfully connected to MongoDB!'))
+  .then(() => console.log('Successfully connected to MongoDB!'))
   .catch((err) => console.error(err))
 
 // Create node http server

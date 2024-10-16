@@ -7,6 +7,7 @@
     <style>
       * {
         margin: 0.5rem 0;
+        font-family: Arial, sans-serif;
       }
       h2 {
         margin: 2rem 0 0 0;
@@ -55,7 +56,7 @@
     <form action="javascript:handleSubmitUrl()">
       <label for="url">Input URL:</label>
       <input
-        type="text"
+        type="url"
         name="url"
         class="input-url"
         placeholder="example.com"
@@ -95,7 +96,7 @@
         const response = await fetch(`/generate?url=${input.value}`)
         const qrcodeTraceUrl = await response.text()
         const outputUrl = document.querySelector('.output-url')
-        outputUrl.innerHTML = `<a href="${qrcodeTraceUrl}" class="," target="_blank">${qrcodeTraceUrl}</a>`
+        outputUrl.innerHTML = `<a href="${qrcodeTraceUrl}" target="_blank">${qrcodeTraceUrl}</a>`
       }
     </script>
   </body>

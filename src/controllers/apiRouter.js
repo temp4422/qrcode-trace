@@ -5,7 +5,7 @@ import { generateUrl, traceUrl } from '#src/models/models.js'
 // Using server.on() as addEventListener() https://nodejs.org/api/http.html#httpcreateserveroptions-requestlistener
 // https://stackoverflow.com/questions/8187507/is-the-on-method-in-this-node-js-code-a-javascript-method-or-a-node-method
 const apiRouter = (server) => {
-  server.on('request', (req, res) => {
+  server.on('request', async (req, res) => {
     const reqUrl = url.parse(req.url)
 
     switch (reqUrl.pathname) {
@@ -24,7 +24,7 @@ const apiRouter = (server) => {
         res.statusCode = 200
         res.setHeader('Content-Type', 'text/html')
         const traceUrlQuery = reqUrl.query.slice(4)
-        const traceUrlPage = traceUrl(traceUrlQuery)
+        const traceUrlPage = await traceUrl(traceUrlQuery)
         res.end(traceUrlPage)
         break
       case '/get':
@@ -34,7 +34,7 @@ const apiRouter = (server) => {
         break
       default:
         res.statusCode = 404
-        res.end('Not found')
+        fs.readFile('./src/views/not-found.html', (err, data) => res.end(data))
     }
   })
 }
