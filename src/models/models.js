@@ -28,12 +28,26 @@ async function insertInMongodb(targetUrl, timestampId, req) {
   console.log(insertedObj)
 }
 
+// Read data from database
+async function readFromMongodb(targetTimestamp) {
+  await mongoDbClient.connect()
+
+  const data = await mongoDbClient
+    .db('qrcode-trace-db')
+    .collection('data-collection')
+    .findOne({ timestampId: Number(targetTimestamp) })
+
+  const readObj = JSON.stringify(data, null, 2) // pretty print
+  console.log(readObj)
+  return data.targetUrl
+}
+
 function generateUrl(req) {
   const targetUrl = url.parse(req.url).query.slice(4)
   const timestampId = Number(new Date().getTime())
 
-  // insertInMongodb(targetUrl, timestampId, req)
-  map.set(timestampId, targetUrl) // Use HashMap if not using mongodb
+  insertInMongodb(targetUrl, timestampId, req)
+  // map.set(timestampId, targetUrl) // Use HashMap if not using mongodb
 
   QRCode.toFile('./dist/qrcode.png', `${host}/trace?url=${timestampId}`)
   const qrcodeTraceUrl = `${host}/trace?url=${timestampId}`
@@ -41,7 +55,11 @@ function generateUrl(req) {
 }
 
 function traceUrl(targetTimestamp) {
-  let redirectUrl = map.get(Number(targetTimestamp))
+  // readFromMongodb(targetTimestamp).then((data) => (redirectUrl = data))
+  readFromMongodb(targetTimestamp)
+  let redirectUrl
+  console.log(redirectUrl)
+  // let redirectUrl = map.get(Number(targetTimestamp))
 
   if (!redirectUrl) {
     return fs.readFileSync('./src/views/not-found.html', 'utf-8')
