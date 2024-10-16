@@ -28,7 +28,6 @@ const apiRouter = (server) => {
         break
       case '/get':
         res.statusCode = 200
-        console.log('OK')
         res.setHeader('Content-Type', 'image/png')
         fs.readFile('./dist/qrcode.png', (err, data) => res.end(data))
         break
