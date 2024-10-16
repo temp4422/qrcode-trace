@@ -1,8 +1,7 @@
-import http from 'node:http'
-import fs from 'node:fs'
-import url from 'node:url'
-import { generateUrl, traceUrl, getQrcode } from './models/models.js'
+import http, { request } from 'node:http'
+
 import { MongoClient } from 'mongodb'
+import { routes } from './routes/routes.js'
 
 // Connect to database with mongodb driver
 const mongoDbClient = new MongoClient(process.env.MONGODB_URI)
@@ -20,40 +19,13 @@ async function connectToDatabase() {
     await mongoDbClient.close()
   }
 }
-connectToDatabase()
+// connectToDatabase()
 
 // Run server
-const server = http.createServer((req, res) => {
-  const reqUrl = url.parse(req.url)
-  let targetUrl
-  if (reqUrl.query) targetUrl = reqUrl.query.slice(4) // remove 'url='
+const server = http.createServer()
 
-  switch (reqUrl.pathname) {
-    case '/':
-      res.statusCode = 200
-      res.setHeader('Content-Type', 'text/html')
-      fs.readFile('./src/views/index.html', (err, data) => res.end(data))
-      break
-    case '/generate':
-      res.statusCode = 200
-      // res.end(generateUrl(targetUrl, req.socket.remoteAddress, req.headers))
-      res.end(generateUrl(targetUrl))
-      break
-    case '/trace':
-      res.statusCode = 200
-      res.setHeader('Content-Type', 'text/html')
-      res.end(traceUrl(targetUrl))
-      break
-    case '/get':
-      res.statusCode = 200
-      res.setHeader('Content-Type', 'image/png')
-      fs.readFile('./dist/qrcode.png', (err, data) => res.end(data))
-      break
-    default:
-      res.statusCode = 404
-      res.end('Not found')
-  }
-})
+// Route requests & responses
+routes(server)
 
 // Default
 const hostname = process.env.HOST || '127.0.0.1'

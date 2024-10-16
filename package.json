@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
   "scripts": {
     "dev": "nodemon --env-file=.env ./src/server.js",
     "start": "node --env-file=.env ./src/server.js",
