@@ -32,7 +32,7 @@ function generateUrl(req) {
   const targetUrl = url.parse(req.url).query.slice(4)
   const timestampId = Number(new Date().getTime())
 
-  insertInMongodb(targetUrl, timestampId, req)
+  // insertInMongodb(targetUrl, timestampId, req)
   map.set(timestampId, targetUrl) // Use HashMap if not using mongodb
 
   QRCode.toFile('./dist/qrcode.png', `${host}/trace?url=${timestampId}`)
@@ -48,6 +48,4 @@ function traceUrl(targetTimestamp) {
   return tracePageWithRedirect
 }
 
-function getQrcode() {}
-
-export { generateUrl, traceUrl, getQrcode }
+export { generateUrl, traceUrl }

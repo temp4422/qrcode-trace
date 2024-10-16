@@ -1,6 +1,6 @@
 import fs from 'node:fs'
 import url from 'node:url'
-import { generateUrl, traceUrl, getQrcode } from '#src/models/models.js'
+import { generateUrl, traceUrl } from '#src/models/models.js'
 
 // Using server.on() as addEventListener() https://nodejs.org/api/http.html#httpcreateserveroptions-requestlistener
 // https://stackoverflow.com/questions/8187507/is-the-on-method-in-this-node-js-code-a-javascript-method-or-a-node-method
@@ -23,11 +23,12 @@ const apiRouter = (server) => {
       case '/trace':
         res.statusCode = 200
         res.setHeader('Content-Type', 'text/html')
-        let traceUrl = reqUrl.query.slice(4)
-        res.end(traceUrl(traceUrl))
+        let traceUrlQuery = reqUrl.query.slice(4)
+        res.end(traceUrl(traceUrlQuery))
         break
       case '/get':
         res.statusCode = 200
+        console.log('OK')
         res.setHeader('Content-Type', 'image/png')
         fs.readFile('./dist/qrcode.png', (err, data) => res.end(data))
         break

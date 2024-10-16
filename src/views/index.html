@@ -46,7 +46,10 @@
         }
       }
 
-      .get-qrcode {
+      .get-qrcode-link {
+        text-decoration: none;
+      }
+      .get-qrcode-button {
         display: block;
       }
 
@@ -83,47 +86,31 @@
       <div class="loader"></div>
     </div>
 
-    <button class="get-qrcode" disabled onclick="handleGetQrcode()">Get QR code</button>
+    <a class="get-qrcode-link" href="/get" download="qrcode.png">
+      <button class="get-qrcode-button" disabled>Get QR code</button></a
+    >
 
     <script>
-      let linkToGetQrcode
       async function handleSubmitUrl() {
         const loader = document.querySelector('.loader')
         loader.style.display = 'block'
 
-        const input = document.querySelector('.input-url')
-        const response = await fetch(`/generate?url=${input.value}`)
-        const data = await response.text()
+        await generateUrl()
 
         const outputUrl = document.querySelector('.output-url')
-        outputUrl.innerHTML = `<a href="${data}" target="_blank">${data}</a>`
-
-        const urlSearch = new URL(outputUrl.firstChild.href).search
-        const getResponse = await fetch(`/get${urlSearch}`)
-        const blob = await getResponse.blob()
-        const url = URL.createObjectURL(blob)
-
-        linkToGetQrcode = document.createElement('a')
-        linkToGetQrcode.href = url
-        linkToGetQrcode.download = 'qrcode.png'
-
         outputUrl.style.display = 'block'
         loader.style.display = 'none'
-
-        const getQrcode = document.querySelector('.get-qrcode')
-        getQrcode.disabled = false
+        const getQrcodeButton = document.querySelector('.get-qrcode-button')
+        getQrcodeButton.disabled = false
       }
 
-      async function handleGetQrcode() {
+      async function generateUrl() {
+        const input = document.querySelector('.input-url')
+        const response = await fetch(`/generate?url=${input.value}`)
+        const qrcodeTraceUrl = await response.text()
         const outputUrl = document.querySelector('.output-url')
-        linkToGetQrcode.click()
-        // URL.revokeObjectURL(url)
-
-        // Alternative
-        // window.open(
-        //   'https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=http://localhost:3000/trace?url=1728555897046',
-        //   '_blank'
-        // )
+        outputUrl.innerHTML = `<a href="${qrcodeTraceUrl}" class="qrcode-trace-url" target="_blank">${qrcodeTraceUrl}</a>`
+        return qrcodeTraceUrl
       }
     </script>
   </body>
