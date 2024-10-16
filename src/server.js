@@ -16,10 +16,11 @@ import { apiRouter } from './controllers/apiRouter.js'
 apiRouter(server)
 
 // Run server with default
-const host = process.env.HOST || '127.0.0.1'
-const port = process.env.PORT || 8080 // proxy to nginx 80 and 443 with certbot tls
-server.listen(port, host, () => {
-  console.log(`Server running at http://${host}:${port}/`)
+const hostname = process.env.HOSTNAME || '127.0.0.1'
+const port = process.env.PORT || 3000
+// proxy to nginx 80 and 443 with certbot tls
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`)
 })
 
 export { mongoDbClient }

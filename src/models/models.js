@@ -3,8 +3,7 @@ import url from 'node:url'
 import QRCode from 'qrcode'
 import { mongoDbClient } from '../server.js'
 
-// const host = 'https://qrcode-trace.duckdns.org'
-const host = 'http://localhost:3000'
+const host = process.env.HOST || 'http://localhost:3000'
 
 // Use HashMap if mongodb not available
 // const map = new Map()
