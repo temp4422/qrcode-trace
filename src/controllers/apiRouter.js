@@ -23,8 +23,9 @@ const apiRouter = (server) => {
       case '/trace':
         res.statusCode = 200
         res.setHeader('Content-Type', 'text/html')
-        let traceUrlQuery = reqUrl.query.slice(4)
-        res.end(traceUrl(traceUrlQuery))
+        const traceUrlQuery = reqUrl.query.slice(4)
+        const traceUrlPage = traceUrl(traceUrlQuery)
+        res.end(traceUrlPage)
         break
       case '/get':
         res.statusCode = 200

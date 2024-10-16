@@ -42,8 +42,15 @@ function generateUrl(req) {
 
 function traceUrl(targetTimestamp) {
   let redirectUrl = map.get(Number(targetTimestamp))
-  if (!redirectUrl.includes('http')) redirectUrl = 'http://' + redirectUrl
-  const tracePage = fs.readFileSync('./src/trace.html', 'utf-8')
+
+  if (!redirectUrl) {
+    return fs.readFileSync('./src/views/not-found.html', 'utf-8')
+  }
+  if (!redirectUrl.includes('http')) {
+    redirectUrl = 'http://' + redirectUrl
+  }
+
+  const tracePage = fs.readFileSync('./src/views/trace.html', 'utf-8')
   const tracePageWithRedirect = tracePage.replace('targetUrl', redirectUrl)
   return tracePageWithRedirect
 }
