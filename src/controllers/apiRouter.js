@@ -16,6 +16,7 @@ const apiRouter = (server) => {
         break
       case '/generate':
         res.statusCode = 200
+        res.setHeader('Content-Type', 'text/plain')
         const qrcodeTraceUrl = generateUrl(req)
         res.end(qrcodeTraceUrl)
         break
