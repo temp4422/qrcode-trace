@@ -2,10 +2,9 @@ import fs from 'node:fs'
 import url from 'node:url'
 import { generateUrl, traceUrl, getQrcode } from '#src/models/models.js'
 
-// const routes = (server) => {
-function routes(server) {
-  // https://nodejs.org/api/http.html#httpcreateserveroptions-requestlistener
-  // https://stackoverflow.com/questions/8187507/is-the-on-method-in-this-node-js-code-a-javascript-method-or-a-node-method
+// https://nodejs.org/api/http.html#httpcreateserveroptions-requestlistener
+// https://stackoverflow.com/questions/8187507/is-the-on-method-in-this-node-js-code-a-javascript-method-or-a-node-method
+const apiRouter = (server) => {
   server.on('request', (req, res) => {
     const reqUrl = url.parse(req.url)
     let targetUrl
@@ -38,4 +37,4 @@ function routes(server) {
   })
 }
 
-export { routes }
+export { apiRouter }
