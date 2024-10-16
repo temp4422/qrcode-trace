@@ -17,7 +17,6 @@ async function insertInMongodb(targetUrl, timestampId, req) {
     targetUrl: targetUrl,
     userData: { requestIP: req.socket.remoteAddress, requestHeaders: req.headers },
   }
-  console.log(data)
 
   await mongoDbClient.connect()
 

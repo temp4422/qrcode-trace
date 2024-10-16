@@ -84,6 +84,7 @@
     </div>
 
     <button class="get-qrcode" disabled onclick="handleGetQrcode()">Get QR code</button>
+
     <script>
       let linkToGetQrcode
       async function handleSubmitUrl() {
@@ -91,8 +92,8 @@
         loader.style.display = 'block'
 
         const input = document.querySelector('.input-url')
-        const generateResponse = await fetch(`/generate?url=${input.value}`)
-        const data = await generateResponse.text()
+        const response = await fetch(`/generate?url=${input.value}`)
+        const data = await response.text()
 
         const outputUrl = document.querySelector('.output-url')
         outputUrl.innerHTML = `<a href="${data}" target="_blank">${data}</a>`

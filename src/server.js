@@ -7,7 +7,7 @@ mongoDbClient
   .then(() => console.log('OK, successfully connected to MongoDB!'))
   .catch((err) => console.error(err))
 
-// Run node http server
+// Create node http server
 import http from 'node:http'
 const server = http.createServer()
 
@@ -15,7 +15,7 @@ const server = http.createServer()
 import { apiRouter } from './controllers/apiRouter.js'
 apiRouter(server)
 
-// Default listen
+// Run server with default
 const host = process.env.HOST || '127.0.0.1'
 const port = process.env.PORT || 8080 // proxy to nginx 80 and 443 with certbot tls
 server.listen(port, host, () => {
