@@ -47,6 +47,10 @@ async function traceUrl(targetTimestamp) {
     return fs.readFileSync('./src/views/not-found.html', 'utf-8')
   }
 
+  if (!redirectUrl.match(/^http.*/)) {
+    redirectUrl = `http://${redirectUrl}`
+  }
+
   const tracePage = fs.readFileSync('./src/views/trace.html', 'utf-8')
   const tracePageWithRedirect = tracePage.replace('targetUrl', redirectUrl)
   return tracePageWithRedirect
