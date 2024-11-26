@@ -1,3 +1,6 @@
+// import .env environment variables
+import 'dotenv/config'
+
 // Connect to database with mongodb driver
 import { MongoClient } from 'mongodb'
 const mongoDbClient = new MongoClient(process.env.MONGODB_URI)
