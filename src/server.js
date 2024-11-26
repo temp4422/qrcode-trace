@@ -16,7 +16,7 @@ import { apiRouter } from './controllers/apiRouter.js'
 apiRouter(server)
 
 // Run server with default
-const hostname = process.env.HOSTNAME || '127.0.0.1'
+const hostname = process.env.HOSTNAME || '0.0.0.0'
 const port = process.env.PORT || 3000
 // proxy to nginx 80 and 443 with certbot tls
 server.listen(port, hostname, () => {
