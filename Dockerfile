@@ -1,5 +1,4 @@
-FROM node:23
-EXPOSE 3001
+FROM node:slim
 WORKDIR /app
 COPY . .
 RUN npm install
