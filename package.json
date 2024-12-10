@@ -2,7 +2,7 @@
   "name": "qrcode-trace",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/server.js",
   "type": "module",
   "imports": {
     "#src/*": "./src/*"
