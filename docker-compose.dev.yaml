@@ -1,0 +1,19 @@
+name: qrcode-trace
+
+services:
+  app:
+    # build: . # Build the application from the current directory Dockerfile
+    build:
+      context: .
+      target: dev
+      # dockerfile: Dockerfile
+    restart: 'no'
+    container_name: qrcode-trace
+    env_file: ./.env
+    ports:
+      - 3000:3000
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app
