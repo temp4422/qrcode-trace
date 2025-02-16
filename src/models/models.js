@@ -16,8 +16,8 @@ function generateUrl(req) {
   insertInMongodb(timestampId, targetUrl, req)
   // map.set(timestampId, targetUrl) // Use HashMap if mongodb not available
 
-  if (!fs.existsSync('./dist/')) fs.mkdirSync('./dist/', { recursive: true })
-  QRCode.toFile('./dist/qrcode.png', `${host}/trace?url=${timestampId}`)
+  if (!fs.existsSync('./generated/')) fs.mkdirSync('./generated/', { recursive: true })
+  QRCode.toFile('./generated/qrcode.png', `${host}/trace?url=${timestampId}`)
   const qrcodeTraceUrl = `${host}/trace?url=${timestampId}`
   return qrcodeTraceUrl
 }
