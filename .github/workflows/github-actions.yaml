@@ -1,0 +1,27 @@
+name: GitHub Actions Pull from VPS on Push to Main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  vps-pull:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy using ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd ~/qrcode-trace
+            git config pull.rebase true # Pull with rebase
+            git pull origin main
+            # npx dotenv-vault@latest pull production --dotenvMe=${{ secrets.DOTENV_ME }}
+            export DOTENV_KEY=${{ secrets.DOTENV_KEY }} # Temporary set variable for dotenv-vault
+            docker compose up -d --build
+            docker image prune --force
+            # unset DOTENV_KEY # Remove variable for dotenv-vault
