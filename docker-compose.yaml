@@ -7,8 +7,9 @@ services:
       target: prod
     restart: unless-stopped
     container_name: qrcode-trace
-    env_file: ./.env.production
     ports:
       - 3000:3000
-    # environment:
-    #   - DOTENV_KEY=${DOTENV_KEY} # Set in gihub-actions
+    # env_file: ./.env.production
+    environment:
+      - DOTENV_KEY=${DOTENV_KEY} # Set in gihub-actions
+
