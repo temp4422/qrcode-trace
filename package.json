@@ -1,33 +1,49 @@
 {
   "name": "qrcode-trace",
-  "version": "1.0.0",
-  "description": "",
-  "main": "src/server.js",
+  "version": "1.0.1",
+  "description": "Generate and track QR codes",
+  "keywords": [
+    "QR code"
+  ],
+  "author": "temp4422",
+  "license": "MIT",
   "type": "module",
-  "imports": {
-    "#src/*": "./src/*"
+  "main": "src/server.js",
+  "engines": {
+    "npm": "^11",
+    "node": "^22"
   },
+  "packageManager": "npm@11.1.0",
   "scripts": {
     "dev": "nodemon ./src/server.js",
     "start": "node ./src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "//dev:docker": "docker compose -f docker-compose.dev.yaml up --build --watch",
+    "//prebuild": "npm run lint && npm run format",
+    "//build": "node server.js && npx @tailwindcss/cli -i ./src/style.css -o ./dist/style.css",
+    "//start:docker": "docker compose up -d --build",
+    "//lint": "echo lint",
+    "//format": "npx prettier --write src/",
+    "//minify": "npx terser dist/server.js --module --ecma 2022 --compress drop_console=true --mangle --output dist/server.js",
+    "//lighthouse": "cd ./lighthouse/ && lighthouse http://localhost:3000 --quiet --chrome-flags='--headless'"
   },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "mongodb": "^6.13.0",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  },
+  "homepage": "https://github.com/temp4422/qrcode-trace#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/temp4422/qrcode-trace.git"
   },
-  "keywords": [
-    "qrcode"
-  ],
-  "author": "temp4422",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/temp4422/qrcode-trace/issues"
   },
-  "homepage": "https://github.com/temp4422/qrcode-trace#readme",
-  "dependencies": {
-    "dotenv": "^16.4.5",
-    "mongodb": "^6.9.0",
-    "qrcode": "^1.5.4"
+  "imports": {
+    "#src/*": "./src/*"
   }
 }
