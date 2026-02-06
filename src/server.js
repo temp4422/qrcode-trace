@@ -1,9 +1,10 @@
 // import .env environment variables
-import 'dotenv/config'
+// import 'dotenv/config'
+import { env } from 'node:process'
 
 // Connect to database with mongodb driver
 import { MongoClient } from 'mongodb'
-const mongoDbClient = new MongoClient(process.env.MONGODB_URI)
+const mongoDbClient = new MongoClient(env.MONGODB_URI)
 mongoDbClient
   .connect()
   .then(mongoDbClient.db('admin').command({ ping: 1 }))
@@ -19,8 +20,8 @@ import { apiRouter } from './controllers/apiRouter.js'
 apiRouter(server)
 
 // Run server with default
-const hostname = process.env.HOSTNAME || '0.0.0.0'
-const port = process.env.PORT || 3000
+const hostname = env.HOSTNAME || '0.0.0.0'
+const port = env.PORT || 3000
 // proxy to nginx 80 and 443 with certbot tls
 server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`)

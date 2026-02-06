@@ -15,10 +15,10 @@
   },
   "packageManager": "npm@11.9.0",
   "scripts": {
-    "dev": "nodemon ./src/server.js",
+    "dev": "dotenvx run -f .env.production -- nodemon ./src/server.js",
     "//prebuild": "npm run lint && npm run format",
     "build": "node ./build.js",
-    "start": "node ./dist/server.js",
+    "start": "dotenvx run -f .env.production -- node ./dist/server.js",
     "docker:dev": "docker compose -f docker-compose.dev.yaml up --build --watch",
     "docker:prod": "docker compose up -d --build",
     "//lint": "echo lint",
@@ -28,7 +28,7 @@
     "//lighthouse": "cd ./lighthouse/ && lighthouse http://localhost:3000 --quiet --chrome-flags='--headless'"
   },
   "dependencies": {
-    "dotenv": "^17.2.4",
+    "@dotenvx/dotenvx": "^1.52.0",
     "mongodb": "^7.1.0",
     "qrcode": "^1.5.4"
   },

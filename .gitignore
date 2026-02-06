@@ -131,8 +131,7 @@ dist
 
 .env*
 .flaskenv*
-!.env.project
-!.env.vault
+!.env.production
 
 # generated qr code
 generated/
