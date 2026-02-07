@@ -5,11 +5,9 @@ services:
     build:
       context: .
       target: prod
-    restart: unless-stopped
+    restart: on-failure:10
     container_name: qrcode-trace
     ports:
       - 3001:3000
-    # env_file: ./.env.production
     environment:
-      - DOTENV_PRIVATE_KEY=${DOTENV_PRIVATE_KEY} # Set in gihub-actions
-
+      - DOTENV_PRIVATE_KEY_PRODUCTION=${DOTENV_PRIVATE_KEY_PRODUCTION}

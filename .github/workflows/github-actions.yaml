@@ -11,15 +11,18 @@ jobs:
     steps:
       - name: Deploy using ssh
         uses: appleboy/ssh-action@master
+        # env:
+          # DOTENV_PRIVATE_KEY_PRODUCTION: ${{ secrets.DOTENV_PRIVATE_KEY_PRODUCTION }}
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
-          DOTENV_PRIVATE_KEY: ${{ secrets.DOTENV_PRIVATE_KEY }}
           port: 22
+          # envs: DOTENV_PRIVATE_KEY_PRODUCTION
           script: |
             cd ~/qrcode-trace
             git config pull.rebase true # Pull with rebase
             git pull origin main
-            docker compose up -d --build
+            # export DOTENV_PRIVATE_KEY_PRODUCTION=${{ secrets.DOTENV_PRIVATE_KEY_PRODUCTION }}
+            DOTENV_PRIVATE_KEY_PRODUCTION=${{ secrets.DOTENV_PRIVATE_KEY_PRODUCTION }} docker compose up -d --build
             docker image prune --force

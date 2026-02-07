@@ -2,6 +2,10 @@
 // import 'dotenv/config'
 import { env } from 'node:process'
 
+if (!env.MONGODB_URI || !env.HOSTNAME || !env.PORT) {
+  throw new Error(`Missing environment variable.`)
+}
+
 // Connect to database with mongodb driver
 import { MongoClient } from 'mongodb'
 const mongoDbClient = new MongoClient(env.MONGODB_URI)
